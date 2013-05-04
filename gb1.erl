@@ -8,7 +8,7 @@
         ]).
 
 -ifdef(TEST).
--include_lib("eqc/include/eqc.hrl").
+-include_lib("proper/include/proper.hrl").
 -endif.
 
 gb_next(K, {_, T}) ->
