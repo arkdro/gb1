@@ -1,0 +1,22 @@
+Mar 16, 2011; 9:13pm
+
+When I use ordered_set ets over gb_trees it has more than once been due to 
+the fact that you can do wonderful stuff with first, next, prev and last - 
+and gb_trees doesn't have them. 
+
+I've made a stab at implementing these functions for the gb_trees data 
+structure, together with a quickcheck spec to verify that they work as 
+expected (you can use eqc mini to run the tests). I think they are 
+reasonably efficient, but perhaps someone can think of a way to optimize 
+them? Have at it, and pls use the spec to verify that you didn't break them* 
+(recalling that an incorrect program can be made arbitrarily fast) 
+
+* e.g. eqc:quickcheck(gb1:prop_first()) 
+
+BR, 
+Ulf W (hoping the list server won't chop the 150-line attachment) 
+
+
+
+Ulf Wiger, CTO, Erlang Solutions, Ltd. 
+http://erlang-solutions.com
