@@ -7,7 +7,9 @@
          last/1
         ]).
 
+-ifdef(TEST).
 -include_lib("eqc/include/eqc.hrl").
+-endif.
 
 gb_next(K, {_, T}) ->
     gb_next_1(K, T).
@@ -94,6 +96,8 @@ last_1({_,_,_,Bigger}) ->
 last_1(nil) ->
     none.
 
+-ifdef(TEST).
+
 prop_first() ->
     ?FORALL(L, list(int()),
             begin
@@ -152,4 +156,6 @@ all_prev([A,B|Rest], T) ->
     all_prev([B|Rest], T);
 all_prev([], _) ->
     ok.
+
+-endif.
 
