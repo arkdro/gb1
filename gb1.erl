@@ -11,6 +11,11 @@
 -include_lib("proper/include/proper.hrl").
 -endif.
 
+-type gb_tree(_K,_V) :: gb_tree().
+
+-spec gb_next(K, gb_tree(K, V)) ->
+                     'none' | {'value', V}.
+
 gb_next(K, {_, T}) ->
     gb_next_1(K, T).
 
@@ -42,6 +47,9 @@ gb_next_1(K, {_, _, _, Bigger}) ->
     end;
 gb_next_1(_, nil) ->
     none.
+
+-spec gb_prev(K, gb_tree(K, V)) ->
+                     'none' | {'value', V}.
 
 gb_prev(K, {_, T}) ->
     gb_prev_1(K, T).
@@ -98,6 +106,9 @@ last_1(nil) ->
 
 -ifdef(TEST).
 
+-type key() :: integer().
+-type val() :: integer().
+
 prop_first() ->
     ?FORALL(L, list(int()),
             begin
@@ -118,12 +129,20 @@ prop_last() ->
                 end
             end).
 
+prop_prev_full() ->
+    ?FORALL(T, gb_tree(key(), val()),
+            ok == all_prev(lists:reverse(gb_trees:keys(T)), T)).
+
 prop_prev() ->
     ?FORALL(L, list(int()),
             begin
                 {T, Sorted} = make_tree(L),
                 ok == all_prev(lists:reverse(Sorted), T)
             end).
+
+prop_next_full() ->
+    ?FORALL(T, gb_tree(key(), val()),
+            ok == all_next(gb_trees:keys(T), T)).
 
 prop_next() ->
     ?FORALL(L, list(int()),
