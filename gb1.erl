@@ -119,7 +119,7 @@ prop_next() ->
     ?FORALL(L, list(int()),
             begin
                 {T, Sorted} = make_tree(L),
-                ok == all_prev(lists:reverse(Sorted), T)
+                ok == all_next(lists:reverse(Sorted), T)
             end).
 
 make_tree(L) ->
