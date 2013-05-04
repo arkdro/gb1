@@ -8,29 +8,29 @@ gb_next(K, {_, T}) ->
 
 gb_next_1(K, {K1, _, Smaller, Bigger}) when K < K1 ->
     case gb_next_1(K, Smaller) of
-	none ->
-	    case gb_next_1(K, Bigger) of
-		none ->
-		    {value, K1};
-		{value, K2} ->
-		    {value, erlang:min(K1, K2)}
-	    end;
-	{value, _} = Res ->
-	    Res
+        none ->
+            case gb_next_1(K, Bigger) of
+                none ->
+                    {value, K1};
+                {value, K2} ->
+                    {value, erlang:min(K1, K2)}
+            end;
+        {value, _} = Res ->
+            Res
     end;
 gb_next_1(K, {K1, _, _, Bigger}) when K > K1 ->
     gb_next_1(K, Bigger);
 gb_next_1(K, {_, _, _, Bigger}) ->
     case Bigger of
-	nil ->
-	    none;
-	{K1, _, Smaller, _} ->
-	    case gb_next_1(K, Smaller) of
-		none ->
-		    {value, K1};
-		{value, _} = Res ->
-		    Res
-	    end
+        nil ->
+            none;
+        {K1, _, Smaller, _} ->
+            case gb_next_1(K, Smaller) of
+                none ->
+                    {value, K1};
+                {value, _} = Res ->
+                    Res
+            end
     end;
 gb_next_1(_, nil) ->
     none.
@@ -40,29 +40,29 @@ gb_prev(K, {_, T}) ->
 
 gb_prev_1(K, {K1, _, Smaller, Bigger}) when K > K1 ->
     case gb_prev_1(K, Bigger) of
-	none ->
-	    case gb_prev_1(K, Smaller) of
-		none ->
-		    {value, K1};
-		{value, K2} ->
-		    {value, erlang:max(K1, K2)}
-	    end;
-	{value, _} = Res ->
-	    Res
+        none ->
+            case gb_prev_1(K, Smaller) of
+                none ->
+                    {value, K1};
+                {value, K2} ->
+                    {value, erlang:max(K1, K2)}
+            end;
+        {value, _} = Res ->
+            Res
     end;
 gb_prev_1(K, {K1, _, Smaller, _}) when K < K1 ->
     gb_prev_1(K, Smaller);
 gb_prev_1(K, {_, _, Smaller, _}) ->
     case Smaller of
-	nil ->
-	    none;
-	{K1, _, _, Bigger} ->
-	    case gb_prev_1(K, Bigger) of
-		none ->
-		    {value, K1};
-		{value, _} = Res ->
-		    Res
-	    end
+        nil ->
+            none;
+        {K1, _, _, Bigger} ->
+            case gb_prev_1(K, Bigger) of
+                none ->
+                    {value, K1};
+                {value, _} = Res ->
+                    Res
+            end
     end;
 gb_prev_1(_, nil) ->
     none.
@@ -90,42 +90,42 @@ last_1(nil) ->
 
 prop_first() ->
     ?FORALL(L, list(int()),
-	    begin
-		{T, Sorted} = make_tree(L),
-		case first(T) of
-		    none -> Sorted == [];
-		    {value,X} -> X == hd(Sorted)
-		end
-	    end).
+            begin
+                {T, Sorted} = make_tree(L),
+                case first(T) of
+                    none -> Sorted == [];
+                    {value,X} -> X == hd(Sorted)
+                end
+            end).
 
 prop_last() ->
     ?FORALL(L, list(int()),
-	    begin
-		{T, Sorted} = make_tree(L),
-		case last(T) of
-		    none -> Sorted == [];
-		    {value,X} -> X == lists:last(Sorted)
-		end
-	    end).
+            begin
+                {T, Sorted} = make_tree(L),
+                case last(T) of
+                    none -> Sorted == [];
+                    {value,X} -> X == lists:last(Sorted)
+                end
+            end).
 
 prop_prev() ->
     ?FORALL(L, list(int()),
-	    begin
-		{T, Sorted} = make_tree(L),
-		ok == all_prev(lists:reverse(Sorted), T)
-	    end).
+            begin
+                {T, Sorted} = make_tree(L),
+                ok == all_prev(lists:reverse(Sorted), T)
+            end).
 
 prop_next() ->
     ?FORALL(L, list(int()),
-	    begin
-		{T, Sorted} = make_tree(L),
-		ok == all_prev(lists:reverse(Sorted), T)
-	    end).
+            begin
+                {T, Sorted} = make_tree(L),
+                ok == all_prev(lists:reverse(Sorted), T)
+            end).
 
 make_tree(L) ->
     T = lists:foldl(fun(X,T) ->
-			    gb_trees:enter(X,1,T)
-		    end, gb_trees:empty(), L),
+                            gb_trees:enter(X,1,T)
+                    end, gb_trees:empty(), L),
     Sorted = [K || {K,_} <- gb_trees:to_list(T)],
     {T, Sorted}.
 
