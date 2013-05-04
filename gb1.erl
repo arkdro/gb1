@@ -1,5 +1,11 @@
 -module(gb1).
--compile(export_all).
+
+-export([
+         gb_next/2,
+         gb_prev/2,
+         first/1,
+         last/1
+        ]).
 
 -include_lib("eqc/include/eqc.hrl").
 
